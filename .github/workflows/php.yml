@@ -1,41 +1,41 @@
-name: CI/CD Pipeline
+name: Build The Theme & Deploy Locally
 
 on:
-  push:
+  pull_request:
     branches:
       - main
+    types: [closed]
 
 jobs:
-  deploy:
+  build-and-deploy-locally:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: "12.x"
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build WordPress
-        run: npm run build  # Replace with your build command
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          github_token: ${{ secrets.TOKEN }}
-          publish_dir: ./build  # Update this with the directory containing your built files
-          publish_branch: main
-          cleanup: false  # Keep existing files in the gh-pages branch
+          php-version: "8.1"
+          tools: composer:v2
 
-      - name: Pull to WordPress Directory
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: Build Theme
+        run: npm run prod
+
+      - name: Deploy Locally
         run: |
-          git fetch origin main
-          git pull origin main
-          git checkout main
-          sudo  mkdir -p /var/www/html/wordpress/wp-content/themes/
-          sudo rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone/
+          # Assuming your local WordPress theme directory is /var/www/html/wordpress/wp-content/themes
+          sudo rm -rf /var/www/html/wordpress/wp-content/themes/twentytwentyone/*
+          sudo cp -r themes/my-theme /var/www/html/wordpress/wp-content/themes/
+
+# Add more steps if needed for your specific deployment to a local environment
