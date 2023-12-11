@@ -13,11 +13,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build WordPress
+        run: npm run build  # Replace with your build command
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: var/www/html/wordpress  # Assuming your WordPress files are in the root directory of your repository
+          publish_dir: ./build  # Update this with the directory containing your built files
+          publish_branch: gh-pages
+          cleanup: false  # Keep existing files in the gh-pages branch
 
   notify:
     runs-on: ubuntu-latest
