@@ -27,7 +27,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN }}
           publish_dir: ./build  # Update this with the directory containing your built files
           publish_branch: gh-pages
           cleanup: false  # Keep existing files in the gh-pages branch
