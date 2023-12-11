@@ -36,4 +36,4 @@ jobs:
         run: |
           git fetch origin main
           git checkout main
-          rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone
+          rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone/
