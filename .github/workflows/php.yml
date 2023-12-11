@@ -34,8 +34,6 @@ jobs:
 
       - name: Pull to WordPress Directory
         run: |
-          git init
-          git remote add origin https://github.com/${{ github.repository }}
-          git fetch origin gh-pages
-          git checkout gh-pages
-          rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone
+            git fetch origin gh-pages
+            git checkout gh-pages
+            rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone
