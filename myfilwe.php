@@ -1,1 +1,1 @@
-gfperokgerpgokerpgoekegopkgerpgkerpgoerkgeropgker
+<? phpinfo() ?>
