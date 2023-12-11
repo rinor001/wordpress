@@ -36,5 +36,5 @@ jobs:
         run: |
           git fetch origin main
           git checkout main
-          mkdir -p /var/www/html/wordpress/wp-content/themes/
-          rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone/
+          sudo  mkdir -p /var/www/html/wordpress/wp-content/themes/
+          sudo rsync -av --exclude='.git*' --exclude='node_modules' ./ /var/www/html/wordpress/wp-content/themes/twentytwentyone/
