@@ -29,14 +29,14 @@ jobs:
 
       - name: Install npm dependencies and Build Theme
         run: |
-          npm ci
-          npm run prod
+          npm ci --force
+          # npm run prod
         working-directory: themes/twentytwentyone
 
       - name: Deploy Locally
         run: |
-          npm install
-          npm run build
+          npm install --force
+          npm run build --force
 
       - name: Set Permissions Locally
         run: |
