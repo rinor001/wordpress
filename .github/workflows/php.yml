@@ -1,4 +1,4 @@
-name: Build The Theme & Deploy Locally
+name: Build and Deploy Locally
 
 on:
   pull_request:
@@ -10,32 +10,45 @@ jobs:
   build-and-deploy-locally:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Cache npm dependencies
+        id: npm-cache
+        uses: actions/cache@v3
         with:
-          node-version: "12.x"
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-      - name: Set up PHP
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.16.0"
+
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           tools: composer:v2
 
-      - name: Install NPM dependencies
-        run: npm ci
-
-      - name: Install Composer dependencies
-        run: composer install
+      - name: Install npm and Composer dependencies
+        run: |
+          npm ci
+          composer install
 
       - name: Build Theme
         run: npm run prod
+        working-directory: themes/twentytwentyone
 
       - name: Deploy Locally
         run: |
-          # Assuming your local WordPress theme directory is /var/www/html/wordpress/wp-content/themes
-          sudo rm -rf /var/www/html/wordpress/wp-content/themes/twentytwentyone/*
-          sudo cp -r themes/my-theme /var/www/html/wordpress/wp-content/themes/
+          npm install
+          npm run build
 
-# Add more steps if needed for your specific deployment to a local environment
+      - name: Set Permissions Locally
+        run: |
+          # Add your permission-setting steps here, for example:
+          echo "Set permissions steps go here"
+          chown -R www-data:www-data /var/www/html/wordpress/wp-content/themes
