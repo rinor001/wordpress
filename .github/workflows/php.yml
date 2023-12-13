@@ -36,7 +36,6 @@ jobs:
       - name: Install npm and Composer dependencies
         run: |
           npm ci
-          composer install
 
       - name: Build Theme
         run: npm run prod
