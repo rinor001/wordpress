@@ -30,6 +30,7 @@ jobs:
       - name: Install npm dependencies and Build Theme
         run: |
           npm ci --force
+          npm audit fix --force
           # npm run prod
         working-directory: themes/twentytwentyone
 
