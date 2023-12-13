@@ -27,18 +27,10 @@ jobs:
         with:
           node-version: "18.16.0"
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "8.2"
-          tools: composer:v2
-
-      - name: Install npm and Composer dependencies
+      - name: Install npm dependencies and Build Theme
         run: |
           npm ci
-
-      - name: Build Theme
-        run: npm run prod
+          npm run prod
         working-directory: themes/twentytwentyone
 
       - name: Deploy Locally
